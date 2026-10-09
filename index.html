@@ -4,6 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#ffffff"><meta name="description" content="Jannis Scheurich — Design, Sound und interaktive Systeme.">
 <title>Jannis Scheurich — Portfolio</title>
+<!-- Version: hover-fix-2026-10-09 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:ital,wght@0,400;0,500;0,600;1,400&family=Syne:wght@700;800&display=swap" rel="stylesheet">
@@ -25,8 +26,13 @@ body{font-weight:400;letter-spacing:.005em;}
 .detail-text h2,.nav-label{font-family:"Space Grotesk",sans-serif;font-weight:500;}
 .project-nav a,.contact a,.detail-text p{font-weight:400;}
 
-/* Hover: WORK, GET IN TOUCH und IMPRESSUM werden schwarz */
-.nav-label a:hover,.nav-label a:focus-visible,.contact a:hover,.contact a:focus-visible{color:#202020;text-decoration:none;}
+/* Navigation links: orange im Normalzustand, schwarz bei Hover und Tastaturfokus. */
+.sidebar .nav-label a,
+.sidebar .contact a { color: #ff6900; transition: color .15s ease; }
+.sidebar .nav-label a:hover,
+.sidebar .nav-label a:focus-visible,
+.sidebar .contact a:hover,
+.sidebar .contact a:focus-visible { color: #000000 !important; text-decoration: none; }
 </style>
 </head>
 <body>
