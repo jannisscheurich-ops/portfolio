@@ -53,8 +53,16 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 .im-photo-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 0}
 .im-photo-pair figure{min-width:0}.im-photo-pair img{aspect-ratio:4/5;object-fit:cover}.im-photo-pair--tall img{aspect-ratio:3/4}
 .im-photo-pair figcaption{padding:0 3px 6px}
-.im-video-wrap{background:#111;aspect-ratio:16/9;overflow:hidden;position:relative}
+/* Portrait source: no 16:9 letterboxing; keep the actual footage at 9:16. */
+.im-video-stage{display:flex;justify-content:center;align-items:flex-start;background:#fff}
+.im-video-wrap{background:#111;aspect-ratio:9/16;width:min(100%,380px);overflow:hidden;position:relative}
 .im-video-wrap iframe{display:block;width:100%;height:100%;border:0}
+.im-sound-toggle{position:absolute;top:12px;left:12px;z-index:2;display:flex;align-items:center;gap:9px;padding:10px 13px;border:1px solid rgba(255,255,255,.23);border-radius:3px;background:rgba(20,20,20,.9);color:#fff;font-family:var(--font-heading);font-size:12px;font-weight:700;line-height:1.2;cursor:pointer;box-shadow:0 2px 12px #0004;transition:background .2s}
+.im-sound-toggle:hover,.im-sound-toggle:focus-visible{background:#ff6900;color:#111}
+.im-sound-toggle svg{display:block;flex-shrink:0;width:18px;height:18px}
+.im-video-tip{display:flex;align-items:center;gap:8px;margin:18px 0 0;color:#707070;font-size:12px;line-height:1.5;font-family:var(--font-body)}
+.im-video-tip svg{width:15px;height:15px;flex-shrink:0}
+@media(max-width:620px){.im-video-stage{padding:0 20px}.im-video-wrap{width:min(100%,380px)}.im-video-tip{margin:15px 20px 0}}
 .im-video-caption{display:flex;justify-content:space-between;gap:20px;margin:12px 0 0;color:#777;font-size:12px;line-height:1.55}
 .im-video-caption span:last-child{white-space:nowrap}
 .im-video-caption a{color:#ff6900;text-decoration:underline;text-underline-offset:2px}
@@ -95,7 +103,21 @@ function initPrototypeVideo(){
   return;
  }
  const player=new window.Vimeo.Player(iframe);
- player.setMuted(true).catch(()=>{});
+ const soundButton=document.getElementById('prototypeSoundToggle');
+ const soundLabel=document.getElementById('prototypeSoundLabel');
+ if(soundButton){
+  soundButton.addEventListener('click', async ()=>{
+   const currentlyOn=soundButton.getAttribute('aria-pressed')==='true';
+   try{
+    await player.setMuted(currentlyOn);
+    if(!currentlyOn){await player.setVolume(1);await player.play();}
+    soundButton.setAttribute('aria-pressed',String(!currentlyOn));
+    soundButton.setAttribute('aria-label',currentlyOn?'Enable sound':'Mute sound');
+    soundLabel.textContent=currentlyOn?'ENABLE SOUND':'MUTE SOUND';
+    soundButton.querySelector('svg').innerHTML=currentlyOn?'<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/>':'<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>';
+   }catch(err){console.warn('Vimeo audio control:',err);}
+  });
+ }
  prototypeObserver=new IntersectionObserver(entries=>{
   if(!document.contains(iframe)){prototypeObserver?.disconnect();return;}
   if(entries[0].isIntersecting){player.play().catch(()=>{});}
@@ -120,8 +142,9 @@ app.innerHTML=`<article class="project-page im-schein-page">
  <section class="im-section im-columns"><div><p class="im-eyebrow">03 / DESIGN APPROACH</p><h2>Beyond the interface.</h2></div><div><p>IM SCHEIN explores an alternative to interfaces built around buttons, screens and programmed input. The work invites people to engage with technology through an immediate sensory response rather than a system of abstract instructions.</p><p>The installation is both a sculptural object and an open instrument: its behaviour emerges from the interplay of physical properties, spatial conditions and individual movement.</p></div></section>
  <div class="im-photo-pair"><figure><img src="images/sculpture.jpg" loading="lazy" alt="Full-height sculptural LED installation"><figcaption>A central cylindrical body supports a field of flexible light elements.</figcaption></figure><figure><img src="images/ambient.jpg" loading="lazy" alt="Glowing light elements against a dark background"><figcaption>The light field is a visible object as well as an invisible carrier of sound.</figcaption></figure></div>
  <section class="im-section im-columns"><div><p class="im-eyebrow">04 / MAKING</p><h2>Electronics as part of the form.</h2></div><div><p>The work combines individual LED emitters, a custom-built connection and distribution system, and handheld solar-cell receivers. The physical construction and signal path were developed together so that the technology could remain responsive while becoming a coherent sculptural installation.</p><p>The documentation below reveals selected components of the physical setup. An early prototype test shows how the light-to-sound transmission worked before the elements were integrated into the final sculpture.</p></div></section>
- <section class="im-section im-columns"><div><p class="im-eyebrow">05 / PROTOTYPE TEST</p><h2>Testing the signal before the sculpture.</h2></div><div><p>An early functional test during the construction phase. With the components still exposed and not yet arranged as a sculpture, the prototype demonstrates the direct light-to-sound transmission and the response of the handheld solar-cell receiver.</p><p>The video starts silently when it comes into view. Enable sound in the player to hear the original experiment.</p></div></section>
- <div class="im-video-wrap"><iframe id="prototypeVideo" title="IM SCHEIN — Prototype Testing" src="https://player.vimeo.com/video/1234706363?autoplay=0&amp;muted=1&amp;loop=1&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+ <section class="im-section im-columns"><div><p class="im-eyebrow">05 / PROTOTYPE TEST</p><h2>Testing the signal before the sculpture.</h2></div><div><p>An early functional test during the construction phase. With the components still exposed and not yet arranged as a sculpture, the prototype demonstrates the direct light-to-sound transmission and the response of the handheld solar-cell receiver.</p></div></section>
+ <div class="im-video-stage"><div class="im-video-wrap"><iframe id="prototypeVideo" title="IM SCHEIN — Prototype Testing" src="https://player.vimeo.com/video/1234706363?autoplay=0&amp;muted=1&amp;loop=1&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><button id="prototypeSoundToggle" class="im-sound-toggle" type="button" aria-label="Enable sound" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/></svg><span id="prototypeSoundLabel">ENABLE SOUND</span></button></div></div>
+ <p class="im-video-tip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></svg><span>Playback tip: the video plays silently while in view. Use “Enable sound” to hear the original prototype test.</span></p>
  <div class="im-video-caption"><span>Prototype test during the construction phase, before the final sculptural assembly.</span><span><a href="https://vimeo.com/1234706363" target="_blank" rel="noopener noreferrer">Watch on Vimeo ↗</a></span></div>
  <div class="im-photo-pair"><figure><img src="images/electronics.jpg" loading="lazy" alt="Hand-built circuit board and connected cables"><figcaption>Custom wiring and circuit-board assembly.</figcaption></figure><figure><img src="images/overview.jpg" loading="lazy" alt="Installed work in the exhibition space"><figcaption>Final installation in its spatial context.</figcaption></figure></div>
  <footer class="im-footer"><div><span>PROJECT</span><strong>IM SCHEIN</strong></div><div><span>TYPE</span><strong>Interactive light–sound installation</strong></div><div><span>CONTEXT</span><strong>Bachelor’s thesis · Communication Design · THWS</strong></div><div><span>YEAR</span><strong>2025</strong></div></footer>
