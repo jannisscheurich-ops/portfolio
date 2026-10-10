@@ -85,6 +85,24 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 .im-vimeo-link:hover{color:#202020}
 @media(max-width:750px){.im-prototype-grid,.im-exhibition-grid{gap:22px}.im-prototype-section h2,.im-exhibition-section h2{margin-bottom:24px}}
 @media(max-width:620px){.im-prototype-section h2,.im-prototype-section>.im-eyebrow,.im-exhibition-section>.im-eyebrow{margin-left:20px;margin-right:20px}.im-prototype-grid,.im-exhibition-grid{grid-template-columns:1fr;gap:22px}.im-prototype-grid .im-video-stage,.im-exhibition-grid .im-video-stage{padding:0 20px;justify-content:flex-start}.im-prototype-description,.im-exhibition-description{padding:0 20px}.im-prototype-section h2,.im-exhibition-section h2{margin-bottom:24px}}
+
+/* PROJECT PAGE HIERARCHY: sidebar name remains visually higher than project headings. */
+@media (min-width: 851px) {
+  .project-page { padding-top: 98px; }
+  .project-page .project-heading { padding-bottom: 52px; }
+  .project-page .project-heading h1 { font-size: clamp(54px, 5vw, 64px); line-height: 1.04; letter-spacing: -.048em; }
+  .project-page .project-heading p { font-size: 18px; margin-top: 7px; }
+}
+@media (min-width: 621px) and (max-width: 850px) {
+  .project-page { padding-top: 82px; }
+  .project-page .project-heading h1 { font-size: clamp(40px, 5.3vw, 52px); }
+  .project-page .project-heading { padding-bottom: 40px; }
+}
+@media (max-width: 620px) {
+  .project-page { padding-top: 30px; }
+  .project-page .project-heading h1 { font-size: clamp(32px, 9vw, 40px); }
+  .project-page .project-heading p { font-size: 16px; }
+}
 </style>
 </head>
 <body>
