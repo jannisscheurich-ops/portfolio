@@ -103,6 +103,26 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
   .project-page .project-heading h1 { font-size: clamp(32px, 9vw, 40px); }
   .project-page .project-heading p { font-size: 16px; }
 }
+
+/* Editorial typography refinement — limited to the IM SCHEIN case study. */
+.im-schein-page .project-heading{padding-bottom:68px}
+.im-schein-page .im-intro{margin-top:57px}
+.im-schein-page .im-eyebrow{font-size:clamp(12px,1vw,13px);line-height:1.45}
+.im-schein-page .im-intro p:not(.im-eyebrow),
+.im-schein-page .im-section p:not(.im-eyebrow){font-size:clamp(16px,1.31vw,18px);line-height:1.69}
+.im-schein-page .im-section{margin-top:84px}
+@media(max-width:850px){
+ .im-schein-page .project-heading{padding-bottom:49px}
+ .im-schein-page .im-intro{margin-top:40px}
+ .im-schein-page .im-section{margin-top:60px}
+}
+@media(max-width:620px){
+ .im-schein-page .project-heading{padding-bottom:38px}
+ .im-schein-page .im-intro{margin:35px 20px 50px}
+ .im-schein-page .im-section{margin:58px 20px 26px}
+ .im-schein-page .im-intro p:not(.im-eyebrow),
+ .im-schein-page .im-section p:not(.im-eyebrow){font-size:16px;line-height:1.65}
+}
 </style>
 </head>
 <body>
