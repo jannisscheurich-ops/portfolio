@@ -72,18 +72,18 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 @media(max-width:850px){.im-columns{gap:20px}.im-intro{margin:36px 0 55px}.im-section{margin:55px 0 28px}.im-signal{justify-content:flex-start}}
 @media(max-width:620px){.im-schein-page .project-heading{padding-bottom:32px}.im-columns{grid-template-columns:1fr;gap:18px}.im-intro{margin:34px 20px 50px}.im-section{margin:58px 20px 26px}.im-hero{aspect-ratio:4/3}.im-hero img{object-position:center center}.im-wide img{aspect-ratio:4/3}.im-wide figcaption{padding:0 20px}.im-signal{margin:0 20px;gap:8px;padding:20px;display:block}.im-signal span,.im-signal b{display:inline}.im-signal b{margin:0 7px}.im-photo-pair{grid-template-columns:1fr;gap:19px;margin-top:20px}.im-photo-pair figcaption{padding:0 20px}.im-photo-pair img{aspect-ratio:4/3}.im-footer{margin:70px 20px 0;grid-template-columns:1fr 1fr;gap:20px 15px}}
 
-/* Prototype: portrait footage left, explanatory copy to the right. */
-.im-prototype-section{margin-bottom:34px}
-.im-prototype-section h2{max-width:660px;margin-bottom:32px}
-.im-prototype-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:42px;align-items:start}
-.im-prototype-grid .im-video-stage{justify-content:flex-start;min-width:0}
-.im-prototype-grid .im-video-wrap{width:min(100%,380px)}
-.im-prototype-description{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
-.im-prototype-description p{margin:0;max-width:420px}
+/* Portrait videos: footage left, explanatory copy to the right. */
+.im-prototype-section,.im-exhibition-section{margin-bottom:34px}
+.im-prototype-section h2,.im-exhibition-section h2{max-width:660px;margin-bottom:32px}
+.im-prototype-grid,.im-exhibition-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:42px;align-items:start}
+.im-prototype-grid .im-video-stage,.im-exhibition-grid .im-video-stage{justify-content:flex-start;min-width:0}
+.im-prototype-grid .im-video-wrap,.im-exhibition-grid .im-video-wrap{width:min(100%,380px)}
+.im-prototype-description,.im-exhibition-description{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
+.im-prototype-description p,.im-exhibition-description p{margin:0;max-width:420px}
 .im-vimeo-link{font-family:var(--font-body);font-size:12px;color:#ff6900;text-decoration:underline;text-underline-offset:3px;margin-top:24px}
 .im-vimeo-link:hover{color:#202020}
-@media(max-width:750px){.im-prototype-grid{gap:22px}.im-prototype-section h2{margin-bottom:24px}}
-@media(max-width:620px){.im-prototype-section h2,.im-prototype-section>.im-eyebrow{margin-left:20px;margin-right:20px}.im-prototype-grid{grid-template-columns:1fr;gap:22px}.im-prototype-grid .im-video-stage{padding:0 20px;justify-content:flex-start}.im-prototype-description{padding:0 20px}.im-prototype-section h2{margin-bottom:24px}}
+@media(max-width:750px){.im-prototype-grid,.im-exhibition-grid{gap:22px}.im-prototype-section h2,.im-exhibition-section h2{margin-bottom:24px}}
+@media(max-width:620px){.im-prototype-section h2,.im-prototype-section>.im-eyebrow,.im-exhibition-section>.im-eyebrow{margin-left:20px;margin-right:20px}.im-prototype-grid,.im-exhibition-grid{grid-template-columns:1fr;gap:22px}.im-prototype-grid .im-video-stage,.im-exhibition-grid .im-video-stage{padding:0 20px;justify-content:flex-start}.im-prototype-description,.im-exhibition-description{padding:0 20px}.im-prototype-section h2,.im-exhibition-section h2{margin-bottom:24px}}
 </style>
 </head>
 <body>
@@ -103,42 +103,43 @@ const app=document.getElementById('app'),nav=document.getElementById('projectNav
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function closeMenu(){sidebar.classList.remove('open');menuButton.setAttribute('aria-expanded','false');menuButton.setAttribute('aria-label','Menü öffnen')}
 menuButton.addEventListener('click',()=>{const open=sidebar.classList.toggle('open');menuButton.setAttribute('aria-expanded',String(open));menuButton.setAttribute('aria-label',open?'Menü schließen':'Menü öffnen')});
-let prototypeObserver=null;
-function initPrototypeVideo(){
- const iframe=document.getElementById('prototypeVideo');
- if(!iframe)return;
+let videoObservers=[];
+function initPortfolioVideos(){
+ const vids=[['prototypeVideo','prototypeSoundToggle','prototypeSoundLabel'],['exhibitionVideo','exhibitionSoundToggle','exhibitionSoundLabel']];
+ if(!document.getElementById('prototypeVideo') && !document.getElementById('exhibitionVideo'))return;
  if(!window.Vimeo || !window.Vimeo.Player){
   if(!document.getElementById('vimeoPlayerSdk')){
    const script=document.createElement('script');script.id='vimeoPlayerSdk';
-   script.src='https://player.vimeo.com/api/player.js';script.onload=initPrototypeVideo;
+   script.src='https://player.vimeo.com/api/player.js';script.onload=initPortfolioVideos;
    document.head.appendChild(script);
   }
   return;
  }
- const player=new window.Vimeo.Player(iframe);
- const soundButton=document.getElementById('prototypeSoundToggle');
- const soundLabel=document.getElementById('prototypeSoundLabel');
- if(soundButton){
-  soundButton.addEventListener('click', async ()=>{
-   const currentlyOn=soundButton.getAttribute('aria-pressed')==='true';
+ for(const [frameId,buttonId,labelId] of vids){
+  const iframe=document.getElementById(frameId);if(!iframe)continue;
+  const player=new window.Vimeo.Player(iframe);
+  const button=document.getElementById(buttonId);
+  const label=document.getElementById(labelId);
+  if(button){button.addEventListener('click',async()=>{
+   const wasOn=button.getAttribute('aria-pressed')==='true';
    try{
-    await player.setMuted(currentlyOn);
-    if(!currentlyOn){await player.setVolume(1);await player.play();}
-    soundButton.setAttribute('aria-pressed',String(!currentlyOn));
-    soundButton.setAttribute('aria-label',currentlyOn?'Enable sound':'Mute sound');
-    soundLabel.textContent=currentlyOn?'ENABLE SOUND':'MUTE SOUND';
-    soundButton.querySelector('svg').innerHTML=currentlyOn?'<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/>':'<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>';
+    await player.setMuted(wasOn);
+    if(!wasOn){await player.setVolume(1);await player.play();}
+    button.setAttribute('aria-pressed',String(!wasOn));
+    button.setAttribute('aria-label',wasOn?'Enable sound':'Mute sound');
+    label.textContent=wasOn?'ENABLE SOUND':'MUTE SOUND';
+    button.querySelector('svg').innerHTML=wasOn?'<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/>':'<path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>';
    }catch(err){console.warn('Vimeo audio control:',err);}
-  });
+  });}
+  const observer=new IntersectionObserver(entries=>{
+   if(!document.contains(iframe)){observer.disconnect();return;}
+   if(entries[0].isIntersecting){player.play().catch(()=>{});}
+   else{player.pause().catch(()=>{});}
+  },{threshold:0.35});
+  observer.observe(iframe);videoObservers.push(observer);
  }
- prototypeObserver=new IntersectionObserver(entries=>{
-  if(!document.contains(iframe)){prototypeObserver?.disconnect();return;}
-  if(entries[0].isIntersecting){player.play().catch(()=>{});}
-  else{player.pause().catch(()=>{});}
- },{threshold:0.35});
- prototypeObserver.observe(iframe);
 }
-function render(){prototypeObserver?.disconnect();prototypeObserver=null;const path=decodeURIComponent(location.hash.replace(/^#\/?/,'')).replace(/\/$/,'');const selected=projects.find(p=>p.id===path);nav.innerHTML=projects.map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('');
+function render(){videoObservers.forEach(observer=>observer.disconnect());videoObservers=[];const path=decodeURIComponent(location.hash.replace(/^#\/?/,'')).replace(/\/$/,'');const selected=projects.find(p=>p.id===path);nav.innerHTML=projects.map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('');
 if(!path){app.innerHTML=`<section class="gallery" aria-label="Projektübersicht">${projects.map((p,i)=>`<a class="tile" href="#/${p.id}" aria-label="${esc(p.title)}"><div class="visual" aria-hidden="true"></div>${p.image?`<img src="${esc(p.image)}" alt="" loading="lazy">`:''}<span class="tile-label">${esc(p.title)}</span></a>`).join('')}</section>`}
 else if(selected && selected.id==='im-schein'){
 app.innerHTML=`<article class="project-page im-schein-page">
@@ -151,12 +152,20 @@ app.innerHTML=`<article class="project-page im-schein-page">
  <div class="im-photo-pair"><figure><img src="images/light-detail.jpg" loading="lazy" alt="Close-up of the individually positioned LED light modules"><figcaption>Individually positioned LED emitters generate overlapping fields of modulated light.</figcaption></figure><figure><img src="images/sensor.jpg" loading="lazy" alt="Handheld solar-cell receiver worn across three fingers"><figcaption>A handheld solar cell becomes the physical receiver of the audio signal.</figcaption></figure></div>
  <section class="im-section im-columns"><div><p class="im-eyebrow">02 / INTERACTION</p><h2>Movement becomes composition.</h2></div><div><p>Visitors move the handheld receivers through the light field. Distance, orientation, shadows and overlapping beams affect what reaches each solar cell—and therefore what can be heard.</p><p>There are no on-screen controls or predefined gestures. The body shapes the listening experience through its presence in the space. Light becomes an audible material, and the visitor becomes part of the instrument.</p></div></section>
  <figure class="im-wide"><img src="images/interaction.jpg" loading="lazy" alt="A visitor holding a solar-cell receiver over the glowing LED sculpture"><figcaption>Light, movement and proximity shape the sound in real time.</figcaption></figure>
+ <section class="im-section im-exhibition-section" aria-labelledby="exhibitionHeading">
+  <p class="im-eyebrow">03 / EXHIBITION DOCUMENTATION</p>
+  <h2 id="exhibitionHeading">Experiencing sound through light.</h2>
+  <div class="im-exhibition-grid">
+   <div class="im-video-stage"><div class="im-video-wrap"><iframe id="exhibitionVideo" title="IM SCHEIN — Exhibition Documentation" src="https://player.vimeo.com/video/1234711912?autoplay=0&amp;muted=1&amp;loop=1&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><button id="exhibitionSoundToggle" class="im-sound-toggle" type="button" aria-label="Enable sound" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/></svg><span id="exhibitionSoundLabel">ENABLE SOUND</span></button></div></div>
+   <div class="im-exhibition-description"><p>Recorded during the exhibition, this footage shows the finished installation in use. Visitors explore the sculptural field of LEDs with handheld solar-cell receivers, shaping what they hear through movement, distance and orientation.</p><p>The recording documents the experience in its actual exhibition setting, where light becomes an audible material and the visitor becomes part of the instrument.</p><a class="im-vimeo-link" href="https://vimeo.com/1234711912" target="_blank" rel="noopener noreferrer">Watch on Vimeo ↗</a></div>
+  </div>
+ </section>
  <div class="im-photo-pair im-photo-pair--tall"><figure><img src="images/interaction-detail.jpg" loading="lazy" alt="Handheld sensors above the light installation in a dark room"><figcaption>The interaction is based on continuous physical coupling, not symbolic commands.</figcaption></figure><figure><img src="images/sensor-back.jpg" loading="lazy" alt="Finger-mounted receiver shown from the rear"><figcaption>Wearable receiver detail.</figcaption></figure></div>
- <section class="im-section im-columns"><div><p class="im-eyebrow">03 / DESIGN APPROACH</p><h2>Beyond the interface.</h2></div><div><p>IM SCHEIN explores an alternative to interfaces built around buttons, screens and programmed input. The work invites people to engage with technology through an immediate sensory response rather than a system of abstract instructions.</p><p>The installation is both a sculptural object and an open instrument: its behaviour emerges from the interplay of physical properties, spatial conditions and individual movement.</p></div></section>
+ <section class="im-section im-columns"><div><p class="im-eyebrow">04 / DESIGN APPROACH</p><h2>Beyond the interface.</h2></div><div><p>IM SCHEIN explores an alternative to interfaces built around buttons, screens and programmed input. The work invites people to engage with technology through an immediate sensory response rather than a system of abstract instructions.</p><p>The installation is both a sculptural object and an open instrument: its behaviour emerges from the interplay of physical properties, spatial conditions and individual movement.</p></div></section>
  <div class="im-photo-pair"><figure><img src="images/sculpture.jpg" loading="lazy" alt="Full-height sculptural LED installation"><figcaption>A central cylindrical body supports a field of flexible light elements.</figcaption></figure><figure><img src="images/ambient.jpg" loading="lazy" alt="Glowing light elements against a dark background"><figcaption>The light field is a visible object as well as an invisible carrier of sound.</figcaption></figure></div>
- <section class="im-section im-columns"><div><p class="im-eyebrow">04 / MAKING</p><h2>Electronics as part of the form.</h2></div><div><p>The work combines individual LED emitters, a custom-built connection and distribution system, and handheld solar-cell receivers. The physical construction and signal path were developed together so that the technology could remain responsive while becoming a coherent sculptural installation.</p><p>The documentation below reveals selected components of the physical setup. An early prototype test shows how the light-to-sound transmission worked before the elements were integrated into the final sculpture.</p></div></section>
+ <section class="im-section im-columns"><div><p class="im-eyebrow">05 / MAKING</p><h2>Electronics as part of the form.</h2></div><div><p>The work combines individual LED emitters, a custom-built connection and distribution system, and handheld solar-cell receivers. The physical construction and signal path were developed together so that the technology could remain responsive while becoming a coherent sculptural installation.</p><p>The documentation below reveals selected components of the physical setup. An early prototype test shows how the light-to-sound transmission worked before the elements were integrated into the final sculpture.</p></div></section>
  <section class="im-section im-prototype-section" aria-labelledby="prototypeHeading">
-  <p class="im-eyebrow">05 / PROTOTYPE TEST</p>
+  <p class="im-eyebrow">06 / PROTOTYPE TEST</p>
   <h2 id="prototypeHeading">Testing the signal before the sculpture.</h2>
   <div class="im-prototype-grid">
    <div class="im-video-stage"><div class="im-video-wrap"><iframe id="prototypeVideo" title="IM SCHEIN — Prototype Testing" src="https://player.vimeo.com/video/1234706363?autoplay=0&amp;muted=1&amp;loop=1&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><button id="prototypeSoundToggle" class="im-sound-toggle" type="button" aria-label="Enable sound" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/></svg><span id="prototypeSoundLabel">ENABLE SOUND</span></button></div></div>
@@ -171,7 +180,7 @@ app.innerHTML=`<article class="project-page im-schein-page">
 else if(selected){app.innerHTML=`<article class="project-page"><header class="project-heading"><h1>${esc(selected.title)}</h1><p>${esc(selected.subtitle)}</p></header><div class="hero">${selected.image?`<img src="${esc(selected.image)}" alt="${esc(selected.title)}" style="width:100%;height:100%;object-fit:cover">`:'<span>Projektvideo / großes Projektbild folgt</span>'}</div><section class="detail-grid"><div class="detail-text"><h2>${esc(selected.heading)}</h2><p>${esc(selected.description)}</p><p>Weitere Bilder, Videos und Informationen ergänzen wir hier später.</p></div><div class="detail-art ${selected.theme==='light'?'light':''}">Weitere Projektdokumentation folgt</div></section><a class="back" href="#/">← ALLE PROJEKTE</a></article>`}
 else if(path==='impressum'){app.innerHTML='<section class="empty"><h1>Impressum</h1><p>Vor der öffentlichen Nutzung bitte vollständige rechtliche Angaben ergänzen.</p><a class="back" href="#/">← ZURÜCK</a></section>'}
 else{app.innerHTML='<section class="empty"><h1>Seite nicht gefunden</h1><a href="#/">Zur Projektübersicht</a></section>'}
-closeMenu();window.scrollTo(0,0);if(selected?.id==='im-schein')initPrototypeVideo()}
+closeMenu();window.scrollTo(0,0);if(selected?.id==='im-schein')initPortfolioVideos()}
 window.addEventListener('hashchange',render);render();
 </script>
 </body></html>
