@@ -37,10 +37,10 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 /* IM SCHEIN — Editorial project case study */
 .im-schein-page{padding-bottom:90px}
 .im-schein-page figure{margin:0}
-.im-schein-page figure img{width:100%;height:100%;display:block;object-fit:cover}
+.im-schein-page figure img{width:100%;height:auto;display:block;object-fit:cover}
 .im-schein-page figcaption{font-family:var(--font-body);font-size:12px;color:#777;line-height:1.5;margin-top:9px}
 .im-hero{aspect-ratio:16/10;overflow:hidden;background:#1b1b1b}
-.im-hero img{object-position:center 47%}
+.im-hero img{height:100%;object-position:center 47%}
 .im-columns{display:grid;grid-template-columns:1fr 1fr;gap:42px}
 .im-intro{margin:54px 0 80px}
 .im-section{margin:80px 0 32px}
@@ -51,7 +51,7 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 .im-signal{background:#171717;color:white;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:13px;padding:24px 26px;font-family:var(--font-heading);font-size:clamp(11px,1vw,15px);font-weight:600;line-height:1.5}
 .im-signal b{font-size:17px;font-weight:400;color:#ff6900}
 .im-photo-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0 0}
-.im-photo-pair figure{min-width:0}.im-photo-pair img{aspect-ratio:4/5;object-fit:cover}.im-photo-pair--tall img{aspect-ratio:3/4}
+.im-photo-pair figure{min-width:0;display:flex;flex-direction:column;align-self:start}.im-photo-pair figure img{flex:none}.im-photo-pair img{aspect-ratio:4/5;object-fit:cover}.im-photo-pair--tall img{aspect-ratio:3/4}
 .im-photo-pair figcaption{padding:0 3px 6px}
 /* Portrait source: no 16:9 letterboxing; keep the actual footage at 9:16. */
 .im-video-stage{display:flex;justify-content:center;align-items:flex-start;background:#fff}
@@ -181,6 +181,15 @@ else if(selected){app.innerHTML=`<article class="project-page"><header class="pr
 else if(path==='impressum'){app.innerHTML='<section class="empty"><h1>Impressum</h1><p>Vor der öffentlichen Nutzung bitte vollständige rechtliche Angaben ergänzen.</p><a class="back" href="#/">← ZURÜCK</a></section>'}
 else{app.innerHTML='<section class="empty"><h1>Seite nicht gefunden</h1><a href="#/">Zur Projektübersicht</a></section>'}
 closeMenu();window.scrollTo(0,0);if(selected?.id==='im-schein')initPortfolioVideos()}
+// The site name is a home link in both desktop and mobile headers.
+// Render immediately, including when the hash is already #/.
+document.querySelectorAll('a.brand').forEach(brand=>{
+ brand.addEventListener('click',event=>{
+  event.preventDefault();
+  if(location.hash!=='#/'){location.hash='#/';}
+  else{render();}
+ });
+});
 window.addEventListener('hashchange',render);render();
 </script>
 </body></html>
