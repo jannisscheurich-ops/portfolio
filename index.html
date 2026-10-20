@@ -170,7 +170,7 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 @media(prefers-reduced-motion:reduce){.corrugated-page .cs-mood-video{display:none}.corrugated-page .cs-mood-hero{background:#163b43 url("images/corrugated-mood-poster.jpg") center/cover no-repeat}}
 
 /* No decorative placeholder shapes over tiles with real cover images. */
-.gallery .tile:has(> img) .visual{display:none}
+
 </style>
 </head>
 <body>
@@ -234,7 +234,7 @@ function render(){videoObservers.forEach(observer=>observer.disconnect());videoO
  `<p class="nav-label">OWN PROJECTS</p><div class="project-nav">${projects.filter(p=>p.id!=='corrugated-surfer').map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('')}</div>`,
  `<p class="nav-label">WORK</p><div class="project-nav">${projects.filter(p=>p.id==='corrugated-surfer').map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('')}</div>`
 ].join('');
-if(!path){app.innerHTML=`<section class="gallery" aria-label="Projektübersicht">${projects.map((p,i)=>`<a class="tile" href="#/${p.id}" aria-label="${esc(p.title)}"><div class="visual" aria-hidden="true"></div>${p.image?`<img src="${esc(p.image)}" alt="" loading="lazy">`:''}<span class="tile-label">${esc(p.title)}</span></a>`).join('')}</section>`}
+if(!path){app.innerHTML=`<section class="gallery" aria-label="Projektübersicht">${projects.map((p,i)=>`<a class="tile" href="#/${p.id}" aria-label="${esc(p.title)}">${p.image?`<img src="${esc(p.image)}" alt="" loading="lazy">`:`<div class="visual" aria-hidden="true"></div>`}<span class="tile-label">${esc(p.title)}</span></a>`).join('')}</section>`}
 else if(selected && selected.id==='im-schein'){
 app.innerHTML=`<article class="project-page im-schein-page">
  <header class="project-heading"><h1>IM SCHEIN</h1><p>Sichtbarer Klang, klingendes Licht</p></header>
