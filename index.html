@@ -168,6 +168,9 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 .corrugated-page .cs-experience-photo img{width:100%;height:auto;display:block;aspect-ratio:16/10;object-fit:cover;object-position:center 43%}
 @media(max-width:620px){.corrugated-page .cs-mood-hero{aspect-ratio:4/3}.corrugated-page .cs-experience-photo img{aspect-ratio:4/3}}
 @media(prefers-reduced-motion:reduce){.corrugated-page .cs-mood-video{display:none}.corrugated-page .cs-mood-hero{background:#163b43 url("images/corrugated-mood-poster.jpg") center/cover no-repeat}}
+
+/* No decorative placeholder shapes over tiles with real cover images. */
+.gallery .tile:has(> img) .visual{display:none}
 </style>
 </head>
 <body>
