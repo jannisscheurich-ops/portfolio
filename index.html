@@ -123,6 +123,31 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
  .im-schein-page .im-intro p:not(.im-eyebrow),
  .im-schein-page .im-section p:not(.im-eyebrow){font-size:16px;line-height:1.65}
 }
+
+/* CORRUGATED SURFER — project-specific media and editorial layout */
+.corrugated-page .project-heading h1{font-size:clamp(35px,4.4vw,59px)}
+.corrugated-page .cs-hero{margin:0;aspect-ratio:16/10;overflow:hidden;background:#141b2d}
+.corrugated-page .cs-hero img{display:block;width:100%;height:100%;object-fit:cover;object-position:center center}
+.corrugated-page .cs-intro{margin-top:56px}
+.corrugated-page .cs-section{margin-top:82px;margin-bottom:28px}
+.corrugated-page .cs-eyebrow{font-family:var(--font-heading);color:#ff6900;font-size:13px;line-height:1.45;font-weight:700;letter-spacing:.02em;margin:0 0 16px}
+.corrugated-page h2{font-family:var(--font-heading);font-size:clamp(25px,2.45vw,39px);line-height:1.14;font-weight:600;letter-spacing:-.04em;margin:0;max-width:440px}
+.corrugated-page .cs-copy p{font-size:clamp(16px,1.31vw,18px);line-height:1.69;margin:0 0 17px}
+.corrugated-page figure{margin:0}
+.corrugated-page figure img{display:block;width:100%;height:auto}
+.corrugated-page figcaption{font:12px/1.5 var(--font-body);color:#777;margin:9px 3px 0}
+.corrugated-page .cs-wide{margin-top:22px}
+.corrugated-page .cs-wide img{aspect-ratio:16/10;object-fit:cover}
+.corrugated-page .cs-photo-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px;align-items:start}
+.corrugated-page .cs-photo-pair img{aspect-ratio:4/5;object-fit:cover;object-position:center 45%}
+.corrugated-page .cs-photo-pair figure{min-width:0}
+.corrugated-page .cs-standalone{margin-top:18px}
+.corrugated-page .cs-standalone img{aspect-ratio:16/10;object-fit:cover;object-position:center 45%}
+.corrugated-page .cs-role{font-family:var(--font-body);font-weight:600;font-style:italic}
+@media(max-width:850px){.corrugated-page .cs-intro{margin-top:40px}.corrugated-page .cs-section{margin-top:60px}}
+@media(max-width:620px){.corrugated-page .project-heading h1{font-size:clamp(27px,7.5vw,36px)}.corrugated-page .cs-hero{aspect-ratio:4/3}.corrugated-page .cs-hero img{object-position:center center}.corrugated-page .cs-intro{margin:35px 20px 50px}.corrugated-page .cs-section{margin:58px 20px 25px}.corrugated-page .cs-copy p{font-size:16px;line-height:1.65}.corrugated-page .cs-photo-pair{grid-template-columns:1fr;gap:22px}.corrugated-page .cs-photo-pair img{aspect-ratio:4/3}.corrugated-page .cs-standalone img,.corrugated-page .cs-wide img{aspect-ratio:4/3}.corrugated-page figcaption{padding:0 20px}.corrugated-page .cs-hero figcaption{padding:0}}
+/* Touch-screen project tiles must be identifiable without hover. */
+@media(hover:none) and (pointer:coarse){.gallery .tile-label{opacity:1;inset:auto 0 0;min-height:58px;padding:12px 16px;font-size:19px;background:rgba(255,105,0,.91)}}
 </style>
 </head>
 <body>
@@ -132,6 +157,7 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 /* HIER PROJEKTE BEARBEITEN. Bilddateien können später z.B. unter assets/ liegen. */
 const projects=[
  {id:'im-schein',title:'IM SCHEIN',subtitle:'Sichtbarer Klang, klingendes Licht',heading:'ZWISCHEN LICHT UND KLANG',description:'Eine interaktive Installation, in der Licht durch Solarzellen in hörbare Signale übersetzt wird. Die Besucherinnen und Besucher verändern den Klang unmittelbar durch ihre Bewegungen.',image:'images/im-schein-cover.jpg',theme:'dark'},
+ {id:'corrugated-surfer',title:'Corrugated Surfer',subtitle:'Interactive Game Audio',heading:'SOUND FOR AN INTERACTIVE SURF EXPERIENCE',description:'Sound design and audio integration using FMOD and Unity for an interactive exhibition game.',image:'images/corrugated-cover.jpg',theme:'dark'},
  {id:'sonnenlicht',title:'Sonnenlicht-Skulpturen',subtitle:'UV · Visible · IR',heading:'SONNENLICHT ALS SIGNAL',description:'Eine experimentelle Untersuchung von Sonnenlicht als gestalterischem Material. Unterschiedliche Bereiche des Lichtspektrums werden erfasst und in musikalische Parameter übertragen.',image:'',theme:'dark'},
  {id:'sounddesign',title:'Sounddesign',subtitle:'Klang und Interaktion',heading:'GESTALTUNG DURCH KLANG',description:'Ausgewählte Arbeiten aus dem Bereich Sounddesign und interaktive Klanggestaltung. Projektmaterial und Hörbeispiele werden ergänzt.',image:'',theme:'dark'},
  {id:'projekt-04',title:'Projekt 04 — Platzhalter',subtitle:'Projekt folgt',heading:'PROJEKT IN ARBEIT',description:'Hier entsteht die Dokumentation eines weiteren Projekts.',image:'',theme:'light'},
@@ -215,6 +241,21 @@ app.innerHTML=`<article class="project-page im-schein-page">
  <footer class="im-footer"><div><span>PROJECT</span><strong>IM SCHEIN</strong></div><div><span>TYPE</span><strong>Interactive light–sound installation</strong></div><div><span>CONTEXT</span><strong>Bachelor project · Communication Design · THWS</strong></div><div><span>YEAR</span><strong>2025</strong></div></footer>
  <a class="back" href="#/">← ALL PROJECTS</a>
  </article>`;
+}
+else if(selected && selected.id==='corrugated-surfer'){
+app.innerHTML=`<article class="project-page corrugated-page">
+ <header class="project-heading"><h1>CORRUGATED SURFER</h1><p>Interactive Game Audio</p></header>
+ <figure class="cs-hero"><img src="images/corrugated-hero.jpg" alt="A visitor standing on a physical surfboard controller at the Corrugated Surfer exhibition stand"></figure>
+ <section class="cs-intro im-columns"><div><p class="cs-eyebrow">GAME AUDIO · UNITY / FMOD · 2024</p><h2>A surf game you can feel — and hear.</h2></div><div class="cs-copy"><p><strong><em>Corrugated Surfer</em></strong> is an interactive trade fair game that connects a physical surfboard with a playful virtual world made of corrugated cardboard. Players shift their weight to steer through the course, dodge obstacles and collect points.</p><p>Developed as a collaborative project at Design + Systeme for König &amp; Bauer, the installation brings physical movement and digital gameplay together. My contribution was the <span class="cs-role">sound design and audio implementation</span>, using FMOD to integrate sounds into the Unity game.</p></div></section>
+ <section class="cs-section im-columns"><div><p class="cs-eyebrow">01 / THE EXPERIENCE</p><h2>Surfing through a world of cardboard.</h2></div><div class="cs-copy"><p>Instead of a conventional controller, visitors stand on a real balance board. Their movements steer the game character through a stylized obstacle course inspired by the world of corrugated packaging.</p><p>The experience was created for a trade fair setting, where the game could be played on-site and followed by spectators on a large screen.</p></div></section>
+ <figure class="cs-wide"><img src="images/corrugated-gameplay.jpg" loading="lazy" alt="Gameplay displayed behind a visitor in the exhibition booth"><figcaption>Physical movement controls the virtual obstacle course.</figcaption></figure>
+ <section class="cs-section im-columns"><div><p class="cs-eyebrow">02 / MY CONTRIBUTION</p><h2>Sound design for interactive play.</h2></div><div class="cs-copy"><p>As a working student at Design + Systeme, I contributed to the game's audio rather than its overall concept or visual development. I worked on the sound design and used FMOD to integrate audio into the Unity project.</p><p>The aim was to support the pace and feedback of gameplay through sound, connecting what happens on screen with what players experience while steering the board.</p></div></section>
+ <div class="cs-photo-pair"><figure><img src="images/corrugated-player.jpg" loading="lazy" alt="Visitor in front of a Corrugated Surfer gameplay screen"><figcaption>The game combines an on-screen environment with a physical controller.</figcaption></figure><figure><img src="images/corrugated-stand.jpg" loading="lazy" alt="Exhibition presentation and surfboard controller at the trade fair"><figcaption>The exhibition setup brings the game into the surrounding space.</figcaption></figure></div>
+ <section class="cs-section im-columns"><div><p class="cs-eyebrow">03 / EXHIBITION</p><h2>Designed to be played in person.</h2></div><div class="cs-copy"><p>The installation was presented as a hands-on trade fair experience. Its physical surfboard and large display turn a short arcade-style challenge into something visitors can immediately understand and try.</p><p>The photographs document the final setup. Gameplay footage with the original audio can be added here later to make the sound design directly accessible.</p></div></section>
+ <figure class="cs-standalone"><img src="images/corrugated-setup.jpg" loading="lazy" alt="Physical surfboard controller, handrail and display at the exhibition"><figcaption>The completed interactive installation at the trade fair.</figcaption></figure>
+ <footer class="im-footer"><div><span>PROJECT</span><strong>Corrugated Surfer</strong></div><div><span>MY ROLE</span><strong>Sound design · FMOD audio integration in Unity</strong></div><div><span>CONTEXT</span><strong>Team project · Design + Systeme · for König &amp; Bauer</strong></div><div><span>YEAR</span><strong>2024</strong></div></footer>
+ <a class="back" href="#/">← ALL PROJECTS</a>
+</article>`;
 }
 else if(selected){app.innerHTML=`<article class="project-page"><header class="project-heading"><h1>${esc(selected.title)}</h1><p>${esc(selected.subtitle)}</p></header><div class="hero">${selected.image?`<img src="${esc(selected.image)}" alt="${esc(selected.title)}" style="width:100%;height:100%;object-fit:cover">`:'<span>Projektvideo / großes Projektbild folgt</span>'}</div><section class="detail-grid"><div class="detail-text"><h2>${esc(selected.heading)}</h2><p>${esc(selected.description)}</p><p>Weitere Bilder, Videos und Informationen ergänzen wir hier später.</p></div><div class="detail-art ${selected.theme==='light'?'light':''}">Weitere Projektdokumentation folgt</div></section><a class="back" href="#/">← ALLE PROJEKTE</a></article>`}
 else if(path==='impressum'){app.innerHTML='<section class="empty"><h1>Impressum</h1><p>Vor der öffentlichen Nutzung bitte vollständige rechtliche Angaben ergänzen.</p><a class="back" href="#/">← ZURÜCK</a></section>'}
