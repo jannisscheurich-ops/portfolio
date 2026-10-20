@@ -148,11 +148,23 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 @media(max-width:620px){.corrugated-page .project-heading h1{font-size:clamp(27px,7.5vw,36px)}.corrugated-page .cs-hero{aspect-ratio:4/3}.corrugated-page .cs-hero img{object-position:center center}.corrugated-page .cs-intro{margin:35px 20px 50px}.corrugated-page .cs-section{margin:58px 20px 25px}.corrugated-page .cs-copy p{font-size:16px;line-height:1.65}.corrugated-page .cs-photo-pair{grid-template-columns:1fr;gap:22px}.corrugated-page .cs-photo-pair img{aspect-ratio:4/3}.corrugated-page .cs-standalone img,.corrugated-page .cs-wide img{aspect-ratio:4/3}.corrugated-page figcaption{padding:0 20px}.corrugated-page .cs-hero figcaption{padding:0}}
 /* Touch-screen project tiles must be identifiable without hover. */
 @media(hover:none) and (pointer:coarse){.gallery .tile-label{opacity:1;inset:auto 0 0;min-height:58px;padding:12px 16px;font-size:19px;background:rgba(255,105,0,.91)}}
+
+/* Corrugated Surfer — film sections and project navigation */
+#projectNav>.nav-label{margin:0 0 13px}
+#projectNav>.project-nav{margin-bottom:28px}
+.corrugated-page .cs-video-section{margin-top:56px}
+.corrugated-page .cs-video-stage{margin-top:22px;width:100%;background:#111;position:relative;aspect-ratio:16/9;overflow:hidden}
+.corrugated-page .cs-video-stage iframe{display:block;width:100%;height:100%;border:0}
+.corrugated-page .cs-video-stage .im-sound-toggle{top:16px;left:16px}
+.corrugated-page .cs-video-note{font:12px/1.5 var(--font-body);color:#777;margin-top:10px}
+.corrugated-page .cs-detail-pair{margin-top:24px}
+.corrugated-page .cs-detail-pair img{aspect-ratio:4/3;object-position:center center}
+@media(max-width:620px){.corrugated-page .cs-video-section{margin-top:42px}.corrugated-page .cs-video-stage .im-sound-toggle{top:10px;left:10px}.corrugated-page .cs-video-note{margin-left:20px;margin-right:20px}}
 </style>
 </head>
 <body>
 <div class="mobile-header"><a class="brand" href="#/" aria-label="Startseite">JANNIS<br>SCHEURICH</a><button id="menuButton" class="menu-button" aria-label="Menü öffnen" aria-expanded="false"><span></span><span></span><span></span></button></div>
-<div class="site"><aside class="sidebar" id="sidebar"><a class="brand" href="#/">JANNIS<br>SCHEURICH</a><nav aria-label="Projekte"><p class="nav-label"><a href="#/">WORK</a></p><div class="project-nav" id="projectNav"></div></nav><div class="contact"><a href="mailto:kontakt@example.com" id="contactLink">GET IN TOUCH</a><a href="#/impressum">IMPRESSUM</a></div></aside><main class="content" id="app"></main></div>
+<div class="site"><aside class="sidebar" id="sidebar"><a class="brand" href="#/">JANNIS<br>SCHEURICH</a><nav aria-label="Projects"><div id="projectNav"></div></nav><div class="contact"><a href="mailto:kontakt@example.com" id="contactLink">GET IN TOUCH</a><a href="#/impressum">IMPRESSUM</a></div></aside><main class="content" id="app"></main></div>
 <script>
 /* HIER PROJEKTE BEARBEITEN. Bilddateien können später z.B. unter assets/ liegen. */
 const projects=[
@@ -170,8 +182,8 @@ function closeMenu(){sidebar.classList.remove('open');menuButton.setAttribute('a
 menuButton.addEventListener('click',()=>{const open=sidebar.classList.toggle('open');menuButton.setAttribute('aria-expanded',String(open));menuButton.setAttribute('aria-label',open?'Menü schließen':'Menü öffnen')});
 let videoObservers=[];
 function initPortfolioVideos(){
- const vids=[['prototypeVideo','prototypeSoundToggle','prototypeSoundLabel'],['exhibitionVideo','exhibitionSoundToggle','exhibitionSoundLabel']];
- if(!document.getElementById('prototypeVideo') && !document.getElementById('exhibitionVideo'))return;
+ const vids=[['prototypeVideo','prototypeSoundToggle','prototypeSoundLabel'],['exhibitionVideo','exhibitionSoundToggle','exhibitionSoundLabel'],['csGameplayVideo','csGameplaySoundToggle','csGameplaySoundLabel'],['csExhibitionVideo','csExhibitionSoundToggle','csExhibitionSoundLabel']];
+ if(!vids.some(([id])=>document.getElementById(id)))return;
  if(!window.Vimeo || !window.Vimeo.Player){
   if(!document.getElementById('vimeoPlayerSdk')){
    const script=document.createElement('script');script.id='vimeoPlayerSdk';
@@ -183,6 +195,9 @@ function initPortfolioVideos(){
  for(const [frameId,buttonId,labelId] of vids){
   const iframe=document.getElementById(frameId);if(!iframe)continue;
   const player=new window.Vimeo.Player(iframe);
+  const startAt=frameId==='csGameplayVideo'?22:0;
+  let initialSeeked=false;
+  if(startAt){player.ready().then(()=>player.setCurrentTime(startAt)).then(()=>{initialSeeked=true;}).catch(()=>{});}
   const button=document.getElementById(buttonId);
   const label=document.getElementById(labelId);
   if(button){button.addEventListener('click',async()=>{
@@ -198,13 +213,16 @@ function initPortfolioVideos(){
   });}
   const observer=new IntersectionObserver(entries=>{
    if(!document.contains(iframe)){observer.disconnect();return;}
-   if(entries[0].isIntersecting){player.play().catch(()=>{});}
+   if(entries[0].isIntersecting){(startAt&&!initialSeeked?player.setCurrentTime(startAt).then(()=>{initialSeeked=true;}):Promise.resolve()).then(()=>player.play()).catch(()=>{});}
    else{player.pause().catch(()=>{});}
   },{threshold:0.35});
   observer.observe(iframe);videoObservers.push(observer);
  }
 }
-function render(){videoObservers.forEach(observer=>observer.disconnect());videoObservers=[];const path=decodeURIComponent(location.hash.replace(/^#\/?/,'')).replace(/\/$/,'');const selected=projects.find(p=>p.id===path);nav.innerHTML=projects.map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('');
+function render(){videoObservers.forEach(observer=>observer.disconnect());videoObservers=[];const path=decodeURIComponent(location.hash.replace(/^#\/?/,'')).replace(/\/$/,'');const selected=projects.find(p=>p.id===path);nav.innerHTML=[
+ `<p class="nav-label">OWN PROJECTS</p><div class="project-nav">${projects.filter(p=>p.id!=='corrugated-surfer').map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('')}</div>`,
+ `<p class="nav-label">WORK</p><div class="project-nav">${projects.filter(p=>p.id==='corrugated-surfer').map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('')}</div>`
+].join('');
 if(!path){app.innerHTML=`<section class="gallery" aria-label="Projektübersicht">${projects.map((p,i)=>`<a class="tile" href="#/${p.id}" aria-label="${esc(p.title)}"><div class="visual" aria-hidden="true"></div>${p.image?`<img src="${esc(p.image)}" alt="" loading="lazy">`:''}<span class="tile-label">${esc(p.title)}</span></a>`).join('')}</section>`}
 else if(selected && selected.id==='im-schein'){
 app.innerHTML=`<article class="project-page im-schein-page">
@@ -248,11 +266,12 @@ app.innerHTML=`<article class="project-page corrugated-page">
  <figure class="cs-hero"><img src="images/corrugated-hero.jpg" alt="A visitor standing on a physical surfboard controller at the Corrugated Surfer exhibition stand"></figure>
  <section class="cs-intro im-columns"><div><p class="cs-eyebrow">GAME AUDIO · UNITY / FMOD · 2024</p><h2>A surf game you can feel — and hear.</h2></div><div class="cs-copy"><p><strong><em>Corrugated Surfer</em></strong> is an interactive trade fair game that connects a physical surfboard with a playful virtual world made of corrugated cardboard. Players shift their weight to steer through the course, dodge obstacles and collect points.</p><p>Developed as a collaborative project at Design + Systeme for König &amp; Bauer, the installation brings physical movement and digital gameplay together. My contribution was the <span class="cs-role">sound design and audio implementation</span>, using FMOD to integrate sounds into the Unity game.</p></div></section>
  <section class="cs-section im-columns"><div><p class="cs-eyebrow">01 / THE EXPERIENCE</p><h2>Surfing through a world of cardboard.</h2></div><div class="cs-copy"><p>Instead of a conventional controller, visitors stand on a real balance board. Their movements steer the game character through a stylized obstacle course inspired by the world of corrugated packaging.</p><p>The experience was created for a trade fair setting, where the game could be played on-site and followed by spectators on a large screen.</p></div></section>
- <figure class="cs-wide"><img src="images/corrugated-gameplay.jpg" loading="lazy" alt="Gameplay displayed behind a visitor in the exhibition booth"><figcaption>Physical movement controls the virtual obstacle course.</figcaption></figure>
- <section class="cs-section im-columns"><div><p class="cs-eyebrow">02 / MY CONTRIBUTION</p><h2>Sound design for interactive play.</h2></div><div class="cs-copy"><p>As a working student at Design + Systeme, I contributed to the game's audio rather than its overall concept or visual development. I worked on the sound design and used FMOD to integrate audio into the Unity project.</p><p>The aim was to support the pace and feedback of gameplay through sound, connecting what happens on screen with what players experience while steering the board.</p></div></section>
- <div class="cs-photo-pair"><figure><img src="images/corrugated-player.jpg" loading="lazy" alt="Visitor in front of a Corrugated Surfer gameplay screen"><figcaption>The game combines an on-screen environment with a physical controller.</figcaption></figure><figure><img src="images/corrugated-stand.jpg" loading="lazy" alt="Exhibition presentation and surfboard controller at the trade fair"><figcaption>The exhibition setup brings the game into the surrounding space.</figcaption></figure></div>
- <section class="cs-section im-columns"><div><p class="cs-eyebrow">03 / EXHIBITION</p><h2>Designed to be played in person.</h2></div><div class="cs-copy"><p>The installation was presented as a hands-on trade fair experience. Its physical surfboard and large display turn a short arcade-style challenge into something visitors can immediately understand and try.</p><p>The photographs document the final setup. Gameplay footage with the original audio can be added here later to make the sound design directly accessible.</p></div></section>
- <figure class="cs-standalone"><img src="images/corrugated-setup.jpg" loading="lazy" alt="Physical surfboard controller, handrail and display at the exhibition"><figcaption>The completed interactive installation at the trade fair.</figcaption></figure>
+
+ <section class="cs-section im-columns"><div><p class="cs-eyebrow">02 / MY CONTRIBUTION</p><h2>Sound design for interactive play.</h2></div><div class="cs-copy"><p>As a working student at Design + Systeme, I worked on the game’s sound design and used FMOD to integrate audio into its Unity project. This was my contribution to a larger team project, not a game developed independently by me.</p><p>Sound supports the pace of play and makes events in the virtual world audible. The gameplay recording below focuses on the in-game sound effects without a music track.</p></div></section>
+ <section class="cs-video-section" aria-label="Gameplay video with sound design"><div class="cs-video-stage"><iframe id="csGameplayVideo" title="Corrugated Surfer — Gameplay & Sound Design" src="https://player.vimeo.com/video/1237672112?autoplay=0&amp;muted=1&amp;loop=0&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><button id="csGameplaySoundToggle" class="im-sound-toggle" type="button" aria-label="Enable sound" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/></svg><span id="csGameplaySoundLabel">ENABLE SOUND</span></button></div><p class="cs-video-note">Gameplay &amp; sound design · starts at 00:22 · audio available using the button on the video</p><a class="im-vimeo-link" href="https://vimeo.com/1237672112#t=22s" target="_blank" rel="noopener noreferrer">Watch on Vimeo ↗</a></section>
+ <section class="cs-section im-columns"><div><p class="cs-eyebrow">03 / EXHIBITION</p><h2>From screen to physical experience.</h2></div><div class="cs-copy"><p>At the trade fair, visitors steered the virtual course by shifting their weight on a physical surfboard. A large display made the game visible to others, turning gameplay into a shared experience.</p><p>The exhibition film shows the complete setup in use, while the photographs capture its physical interface and cardboard-inspired visual environment.</p></div></section>
+ <section class="cs-video-section" aria-label="Exhibition video"><div class="cs-video-stage"><iframe id="csExhibitionVideo" title="Corrugated Surfer — Exhibition Documentation" src="https://player.vimeo.com/video/1237673745?autoplay=0&amp;muted=1&amp;loop=1&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><button id="csExhibitionSoundToggle" class="im-sound-toggle" type="button" aria-label="Enable sound" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/></svg><span id="csExhibitionSoundLabel">ENABLE SOUND</span></button></div><p class="cs-video-note">Exhibition documentation · trade fair presentation</p><a class="im-vimeo-link" href="https://vimeo.com/1237673745" target="_blank" rel="noopener noreferrer">Watch on Vimeo ↗</a></section>
+ <div class="cs-photo-pair cs-detail-pair"><figure><img src="images/corrugated-detail.jpg" loading="lazy" alt="Close-up of the Corrugated Surfer cardboard-style signage and palm tree"><figcaption>Cardboard-inspired graphics and exhibition signage.</figcaption></figure><figure><img src="images/corrugated-stand.jpg" loading="lazy" alt="Surfboard controller and game display in the exhibition setting"><figcaption>The physical surfboard and display at the trade fair.</figcaption></figure></div>
  <footer class="im-footer"><div><span>PROJECT</span><strong>Corrugated Surfer</strong></div><div><span>MY ROLE</span><strong>Sound design · FMOD audio integration in Unity</strong></div><div><span>CONTEXT</span><strong>Team project · Design + Systeme · for König &amp; Bauer</strong></div><div><span>YEAR</span><strong>2024</strong></div></footer>
  <a class="back" href="#/">← ALL PROJECTS</a>
 </article>`;
@@ -260,7 +279,7 @@ app.innerHTML=`<article class="project-page corrugated-page">
 else if(selected){app.innerHTML=`<article class="project-page"><header class="project-heading"><h1>${esc(selected.title)}</h1><p>${esc(selected.subtitle)}</p></header><div class="hero">${selected.image?`<img src="${esc(selected.image)}" alt="${esc(selected.title)}" style="width:100%;height:100%;object-fit:cover">`:'<span>Projektvideo / großes Projektbild folgt</span>'}</div><section class="detail-grid"><div class="detail-text"><h2>${esc(selected.heading)}</h2><p>${esc(selected.description)}</p><p>Weitere Bilder, Videos und Informationen ergänzen wir hier später.</p></div><div class="detail-art ${selected.theme==='light'?'light':''}">Weitere Projektdokumentation folgt</div></section><a class="back" href="#/">← ALLE PROJEKTE</a></article>`}
 else if(path==='impressum'){app.innerHTML='<section class="empty"><h1>Impressum</h1><p>Vor der öffentlichen Nutzung bitte vollständige rechtliche Angaben ergänzen.</p><a class="back" href="#/">← ZURÜCK</a></section>'}
 else{app.innerHTML='<section class="empty"><h1>Seite nicht gefunden</h1><a href="#/">Zur Projektübersicht</a></section>'}
-closeMenu();window.scrollTo(0,0);if(selected?.id==='im-schein')initPortfolioVideos()}
+closeMenu();window.scrollTo(0,0);if(selected?.id==='im-schein'||selected?.id==='corrugated-surfer')initPortfolioVideos()}
 // The site name is a home link in both desktop and mobile headers.
 // Render immediately, including when the hash is already #/.
 document.querySelectorAll('a.brand').forEach(brand=>{
