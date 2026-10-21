@@ -265,6 +265,12 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
   .gallery .tile-label-description{font-size: clamp(16px, 4.2vw, 21px);}
 }
 
+
+/* Quiet, centered academic credits at the end of university projects. */
+.academic-credits{margin:58px auto 32px;max-width:660px;padding:0 20px;text-align:center;color:#999;font-family:var(--font-body);font-size:15px;line-height:1.65;font-weight:400}
+.academic-credits p{margin:0}
+@media(max-width:620px){.academic-credits{font-size:14px;line-height:1.65;margin:45px auto 24px;padding:0 28px}}
+
 </style>
 </head>
 <body>
@@ -359,6 +365,7 @@ app.innerHTML=`<article class="project-page im-schein-page">
  </section>
  <div class="im-photo-pair"><figure><img src="images/electronics.jpg" loading="lazy" alt="Hand-built circuit board and connected cables"><figcaption>Custom wiring and circuit-board assembly.</figcaption></figure><figure><img src="images/overview.jpg" loading="lazy" alt="Installed work in the exhibition space"><figcaption>Final installation in its spatial context.</figcaption></figure></div>
  <footer class="im-footer"><div><span>PROJECT</span><strong>IM SCHEIN</strong></div><div><span>TYPE</span><strong>Interactive light–sound installation</strong></div><div><span>CONTEXT</span><strong>Bachelor project · Communication Design · THWS</strong></div><div><span>YEAR</span><strong>2025</strong></div></footer>
+ <div class="academic-credits" aria-label="Academic project details"><p>Faculty of Design Würzburg</p><p>Bachelor Project by Jannis Scheurich · 2025</p><p>Communication Design</p><p>First examiner: Prof. Erich Schöls</p><p>Second examiner: Prof. Felix Babel</p></div>
  <a class="back" href="#/">← ALL PROJECTS</a>
  </article>`;
 }
@@ -381,7 +388,8 @@ app.innerHTML=`<article class="project-page ohr-page">
  <div class="ohr-signal" aria-label="Ultrasound is reflected by the body, received and converted by a heterodyne microphone, then heard and visualized"><span>ULTRASOUND</span><b>→</b><span>BODY REFLECTION</span><b>→</b><span>HETERODYNE RECEIVER</span><b>→</b><span>SOUND + WAVEFORM</span></div>
  <figure class="ohr-wide ohr-wide-context"><img src="images/ohr-table-setup.jpg" loading="lazy" alt="The compact electronics and listening station installed on a white exhibition table"><figcaption>Ultrasonic transmitter, self-built receiver, oscilloscope and audio interface arranged on the exhibition table.</figcaption></figure>
  <section class="ohr-section im-columns"><div><p class="ohr-eyebrow">04 / DESIGN APPROACH</p><h2>Part of the wave, not its controller.</h2></div><div class="ohr-copy"><p>The body is not used as a controller issuing commands. It becomes part of the acoustic environment itself, reflecting and altering a wave that normally remains beyond our perception.</p><p>Inspired by the ultrasonic sound experiments of John Driscoll, the work invites visitors to discover the sensitivity of a physical medium through listening, movement and immediate feedback.</p></div></section>
- <footer class="im-footer"><div><span>PROJECT</span><strong>ohr.</strong></div><div><span>TYPE</span><strong>Analogue interactive sound installation</strong></div><div><span>MY ROLE</span><strong>Independent project · concept and realization</strong></div><div><span>REFERENCE</span><strong>Ultrasonic sound experiments by John Driscoll</strong></div></footer>
+ <footer class="im-footer"><div><span>PROJECT</span><strong>ohr.</strong></div><div><span>TYPE</span><strong>Analogue interactive sound installation</strong></div><div><span>MY ROLE</span><strong>Independent project · concept and realization</strong></div><div><span>YEAR</span><strong>2023</strong></div><div><span>REFERENCE</span><strong>Ultrasonic sound experiments by John Driscoll</strong></div></footer>
+ <div class="academic-credits" aria-label="Academic project details"><p>Faculty of Design Würzburg</p><p>5th Semester · Interactive Media · 2023</p><p>Project by Jannis Scheurich</p><p>Supervised by Prof. Erich Schöls</p></div>
  <a class="back" href="#/">← ALL PROJECTS</a>
  </article>`;
 }
