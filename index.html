@@ -209,6 +209,62 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 .gallery .tile-label-title{display:block;color:#fff;font-family:var(--font-heading);font-size:clamp(27px,4.1vw,54px);line-height:1.04;letter-spacing:-.055em;font-weight:700;text-transform:uppercase;overflow-wrap:break-word;max-width:100%}
 .gallery .tile-label-description{display:block;color:#161616;font-family:var(--font-heading);font-size:clamp(14px,1.45vw,20px);line-height:1.3;font-weight:500;font-style:italic;letter-spacing:-.025em;max-width:92%}
 @media(max-width:620px){.gallery .tile-label{gap:9px;padding:18px}.gallery .tile-label-title{font-size:clamp(30px,9vw,48px)}.gallery .tile-label-description{font-size:clamp(15px,4.4vw,19px)}}
+
+/* Final gallery overlay: readable image underneath, editorial text at bottom left. */
+.gallery .tile-label{
+  background:rgba(255,105,0,.77);
+  align-items:flex-start;
+  justify-content:flex-end;
+  text-align:left;
+  padding:clamp(18px,3.5%,34px);
+  gap:5px;
+}
+.gallery .tile-label-title,.gallery .tile-label-description{
+  text-align:left;
+  align-self:flex-start;
+  max-width:100%;
+}
+.gallery .tile-label-title{font-size:clamp(31px,4.2vw,57px);line-height:1.01}
+.gallery .tile-label-description{font-size:clamp(15px,1.35vw,19px)}
+@media(max-width:620px){
+  .gallery .tile-label{padding:clamp(18px,5.5%,30px);gap:5px}
+  .gallery .tile-label-title{font-size:clamp(31px,9.2vw,54px)}
+  .gallery .tile-label-description{font-size:clamp(15px,4.4vw,20px)}
+}
+
+/* Tile typography: oversized editorial titles anchored to the bottom-left,
+   matching the supplied visual reference more closely. */
+.gallery .tile-label{
+  padding: 10px 11px 9px;
+  gap: 1px;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.gallery .tile-label-title{
+  font-size: clamp(43px, 5vw, 69px);
+  font-weight: 700;
+  line-height: .925;
+  letter-spacing: -.058em;
+  text-align: left;
+  max-width: 100%;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+.gallery .tile-label-description{
+  font-size: clamp(16px, 1.48vw, 20px);
+  font-style: italic;
+  line-height: 1.04;
+  font-weight: 500;
+  letter-spacing: -.03em;
+  max-width: 100%;
+  text-align: left;
+}
+@media (max-width: 620px){
+  .gallery .tile-label{padding: 10px 11px 9px;gap: 2px;}
+  .gallery .tile-label-title{font-size: clamp(42px, 11.1vw, 68px);line-height: .94;}
+  .gallery .tile-label-description{font-size: clamp(16px, 4.2vw, 21px);}
+}
+
 </style>
 </head>
 <body>
@@ -268,10 +324,7 @@ function initPortfolioVideos(){
   observer.observe(iframe);videoObservers.push(observer);
  }
 }
-function render(){videoObservers.forEach(observer=>observer.disconnect());videoObservers=[];const path=decodeURIComponent(location.hash.replace(/^#\/?/,'')).replace(/\/$/,'');const selected=projects.find(p=>p.id===path);nav.innerHTML=[
- `<p class="nav-label">OWN PROJECTS</p><div class="project-nav">${projects.filter(p=>p.id!=='corrugated-surfer').map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('')}</div>`,
- `<p class="nav-label">WORK</p><div class="project-nav">${projects.filter(p=>p.id==='corrugated-surfer').map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('')}</div>`
-].join('');
+function render(){videoObservers.forEach(observer=>observer.disconnect());videoObservers=[];const path=decodeURIComponent(location.hash.replace(/^#\/?/,'')).replace(/\/$/,'');const selected=projects.find(p=>p.id===path);nav.innerHTML=`<p class="nav-label">WORK</p><div class="project-nav">${projects.map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('')}</div>`;
 if(!path){app.innerHTML=`<section class="gallery" aria-label="Projektübersicht">${projects.map((p,i)=>`<a class="tile" href="#/${p.id}" aria-label="${esc(p.title)}">${p.image?`<img src="${esc(p.image)}" alt="" loading="lazy">`:`<div class="visual" aria-hidden="true"></div>`}<span class="tile-label"><span class="tile-label-title">${esc(p.title)}</span><span class="tile-label-description">${esc(p.tileDescription)}</span></span></a>`).join('')}</section>`}
 else if(selected && selected.id==='im-schein'){
 app.innerHTML=`<article class="project-page im-schein-page">
