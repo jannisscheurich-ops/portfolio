@@ -177,6 +177,38 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 
 /* No decorative placeholder shapes over tiles with real cover images. */
 
+
+/* ohr. — restrained editorial case-study using the existing portfolio grid */
+.ohr-page figure{margin:0}
+.ohr-page .project-heading h1{font-size:clamp(44px,5.5vw,68px);text-transform:none}
+.ohr-hero{aspect-ratio:16/10;overflow:hidden;background:#ededed}
+.ohr-hero img{display:block;width:100%;height:100%;object-fit:cover;object-position:center 48%}
+.ohr-intro{margin-top:56px}
+.ohr-section{margin:82px 0 30px}
+.ohr-eyebrow{font-family:var(--font-heading);font-size:13px;line-height:1.4;font-weight:700;color:#ff6900;letter-spacing:.02em;margin:0 0 16px}
+.ohr-page h2{font-family:var(--font-heading);font-size:clamp(25px,2.45vw,39px);letter-spacing:-.04em;line-height:1.14;font-weight:600;margin:0;max-width:420px}
+.ohr-copy p{font-family:var(--font-body);font-size:clamp(16px,1.31vw,18px);line-height:1.69;margin:0 0 17px}
+.ohr-wide{margin-top:20px!important}
+.ohr-wide img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:center 51%}
+.ohr-wide-context img{object-position:center 50%}
+.ohr-page figcaption{font-family:var(--font-body);font-size:12px;color:#777;line-height:1.5;padding:9px 3px 0}
+.ohr-signal{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:#191919;color:#fff;padding:22px 24px;font:600 clamp(11px,1vw,14px)/1.5 var(--font-heading)}
+.ohr-signal b{font-size:18px;color:#ff6900;font-weight:400}
+@media(max-width:850px){.ohr-intro{margin-top:42px}.ohr-section{margin-top:60px}}
+@media(max-width:620px){.ohr-page .project-heading h1{font-size:48px}.ohr-hero{aspect-ratio:4/3}.ohr-intro{margin:35px 20px 50px}.ohr-section{margin:58px 20px 24px}.ohr-copy p{font-size:16px;line-height:1.65}.ohr-wide img{aspect-ratio:4/3}.ohr-page figcaption{padding:9px 20px 0}.ohr-signal{display:block;margin:0 20px;padding:20px}.ohr-signal span,.ohr-signal b{display:inline}.ohr-signal b{margin:0 7px}}
+
+
+/* ohr.: portrait exhibition film, using the established Vimeo player. */
+.ohr-video-section{margin:72px 0 36px}
+.ohr-video-section h2{max-width:650px;margin-bottom:32px}
+.ohr-video-section .im-video-stage{justify-content:flex-start}
+@media(max-width:620px){.ohr-video-section{margin:58px 0 28px}.ohr-video-section>.ohr-eyebrow,.ohr-video-section>h2{margin-left:20px;margin-right:20px}.ohr-video-section h2{margin-bottom:24px}}
+
+/* Project-grid hover: editorial title and subtitle, same on touch and desktop. */
+.gallery .tile-label{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:rgba(255,105,0,.94);padding:clamp(18px,4%,42px);text-align:center}
+.gallery .tile-label-title{display:block;color:#fff;font-family:var(--font-heading);font-size:clamp(27px,4.1vw,54px);line-height:1.04;letter-spacing:-.055em;font-weight:700;text-transform:uppercase;overflow-wrap:break-word;max-width:100%}
+.gallery .tile-label-description{display:block;color:#161616;font-family:var(--font-heading);font-size:clamp(14px,1.45vw,20px);line-height:1.3;font-weight:500;font-style:italic;letter-spacing:-.025em;max-width:92%}
+@media(max-width:620px){.gallery .tile-label{gap:9px;padding:18px}.gallery .tile-label-title{font-size:clamp(30px,9vw,48px)}.gallery .tile-label-description{font-size:clamp(15px,4.4vw,19px)}}
 </style>
 </head>
 <body>
@@ -185,13 +217,13 @@ body,.project-nav a,.detail-text p,.detail-art,.hero span,.empty p,.back{font-fa
 <script>
 /* HIER PROJEKTE BEARBEITEN. Bilddateien können später z.B. unter assets/ liegen. */
 const projects=[
- {id:'im-schein',title:'IM SCHEIN',subtitle:'Sichtbarer Klang, klingendes Licht',heading:'ZWISCHEN LICHT UND KLANG',description:'Eine interaktive Installation, in der Licht durch Solarzellen in hörbare Signale übersetzt wird. Die Besucherinnen und Besucher verändern den Klang unmittelbar durch ihre Bewegungen.',image:'images/im-schein-cover.jpg',theme:'dark'},
- {id:'corrugated-surfer',title:'Corrugated Surfer',subtitle:'Interactive Game Audio',heading:'SOUND FOR AN INTERACTIVE SURF EXPERIENCE',description:'Sound design and audio integration using FMOD and Unity for an interactive exhibition game.',image:'images/corrugated-cover.jpg',theme:'dark'},
- {id:'sonnenlicht',title:'Sonnenlicht-Skulpturen',subtitle:'UV · Visible · IR',heading:'SONNENLICHT ALS SIGNAL',description:'Eine experimentelle Untersuchung von Sonnenlicht als gestalterischem Material. Unterschiedliche Bereiche des Lichtspektrums werden erfasst und in musikalische Parameter übertragen.',image:'',theme:'dark'},
- {id:'sounddesign',title:'Sounddesign',subtitle:'Klang und Interaktion',heading:'GESTALTUNG DURCH KLANG',description:'Ausgewählte Arbeiten aus dem Bereich Sounddesign und interaktive Klanggestaltung. Projektmaterial und Hörbeispiele werden ergänzt.',image:'',theme:'dark'},
- {id:'projekt-04',title:'Projekt 04 — Platzhalter',subtitle:'Projekt folgt',heading:'PROJEKT IN ARBEIT',description:'Hier entsteht die Dokumentation eines weiteren Projekts.',image:'',theme:'light'},
- {id:'projekt-05',title:'Projekt 05 — Platzhalter',subtitle:'Projekt folgt',heading:'PROJEKT IN ARBEIT',description:'Hier entsteht die Dokumentation eines weiteren Projekts.',image:'',theme:'dark'},
- {id:'projekt-06',title:'Projekt 06 — Platzhalter',subtitle:'Projekt folgt',heading:'PROJEKT IN ARBEIT',description:'Hier entsteht die Dokumentation eines weiteren Projekts.',image:'',theme:'light'}
+ {id:'im-schein',tileDescription:'Visible sound, audible light',title:'IM SCHEIN',subtitle:'Sichtbarer Klang, klingendes Licht',heading:'ZWISCHEN LICHT UND KLANG',description:'Eine interaktive Installation, in der Licht durch Solarzellen in hörbare Signale übersetzt wird. Die Besucherinnen und Besucher verändern den Klang unmittelbar durch ihre Bewegungen.',image:'images/im-schein-cover.jpg',theme:'dark'},
+ {id:'corrugated-surfer',tileDescription:'Interactive game sound design',title:'Corrugated Surfer',subtitle:'Interactive Game Audio',heading:'SOUND FOR AN INTERACTIVE SURF EXPERIENCE',description:'Sound design and audio integration using FMOD and Unity for an interactive exhibition game.',image:'images/corrugated-cover.jpg',theme:'dark'},
+ {id:'sonnenlicht',tileDescription:'Exploring sunlight through sound',title:'Sonnenlicht-Skulpturen',subtitle:'UV · Visible · IR',heading:'SONNENLICHT ALS SIGNAL',description:'Eine experimentelle Untersuchung von Sonnenlicht als gestalterischem Material. Unterschiedliche Bereiche des Lichtspektrums werden erfasst und in musikalische Parameter übertragen.',image:'',theme:'dark'},
+ {id:'sounddesign',tileDescription:'Sound design and interaction',title:'Sounddesign',subtitle:'Klang und Interaktion',heading:'GESTALTUNG DURCH KLANG',description:'Ausgewählte Arbeiten aus dem Bereich Sounddesign und interaktive Klanggestaltung. Projektmaterial und Hörbeispiele werden ergänzt.',image:'',theme:'dark'},
+ {id:'ohr',tileDescription:'Making movement audible',title:'ohr.',subtitle:'Making ultrasound audible',heading:'MOVEMENT BECOMES SOUND',description:'An analogue interactive installation that translates subtle hand movements into audible changes in pitch.',image:'images/ohr-cover.jpg',theme:'light'},
+ {id:'projekt-05',tileDescription:'Project coming soon',title:'Projekt 05 — Platzhalter',subtitle:'Projekt folgt',heading:'PROJEKT IN ARBEIT',description:'Hier entsteht die Dokumentation eines weiteren Projekts.',image:'',theme:'dark'},
+ {id:'projekt-06',tileDescription:'Project coming soon',title:'Projekt 06 — Platzhalter',subtitle:'Projekt folgt',heading:'PROJEKT IN ARBEIT',description:'Hier entsteht die Dokumentation eines weiteren Projekts.',image:'',theme:'light'}
 ];
 const app=document.getElementById('app'),nav=document.getElementById('projectNav'),sidebar=document.getElementById('sidebar'),menuButton=document.getElementById('menuButton');
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
@@ -199,7 +231,7 @@ function closeMenu(){sidebar.classList.remove('open');menuButton.setAttribute('a
 menuButton.addEventListener('click',()=>{const open=sidebar.classList.toggle('open');menuButton.setAttribute('aria-expanded',String(open));menuButton.setAttribute('aria-label',open?'Menü schließen':'Menü öffnen')});
 let videoObservers=[];
 function initPortfolioVideos(){
- const vids=[['prototypeVideo','prototypeSoundToggle','prototypeSoundLabel'],['exhibitionVideo','exhibitionSoundToggle','exhibitionSoundLabel'],['csGameplayVideo','csGameplaySoundToggle','csGameplaySoundLabel'],['csExhibitionVideo','csExhibitionSoundToggle','csExhibitionSoundLabel']];
+ const vids=[['prototypeVideo','prototypeSoundToggle','prototypeSoundLabel'],['exhibitionVideo','exhibitionSoundToggle','exhibitionSoundLabel'],['csGameplayVideo','csGameplaySoundToggle','csGameplaySoundLabel'],['csExhibitionVideo','csExhibitionSoundToggle','csExhibitionSoundLabel'],['ohrExhibitionVideo','ohrExhibitionSoundToggle','ohrExhibitionSoundLabel']];
  if(!vids.some(([id])=>document.getElementById(id)))return;
  if(!window.Vimeo || !window.Vimeo.Player){
   if(!document.getElementById('vimeoPlayerSdk')){
@@ -240,7 +272,7 @@ function render(){videoObservers.forEach(observer=>observer.disconnect());videoO
  `<p class="nav-label">OWN PROJECTS</p><div class="project-nav">${projects.filter(p=>p.id!=='corrugated-surfer').map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('')}</div>`,
  `<p class="nav-label">WORK</p><div class="project-nav">${projects.filter(p=>p.id==='corrugated-surfer').map(p=>`<a href="#/${p.id}" class="${selected===p?'active':''}">${esc(p.title)}</a>`).join('')}</div>`
 ].join('');
-if(!path){app.innerHTML=`<section class="gallery" aria-label="Projektübersicht">${projects.map((p,i)=>`<a class="tile" href="#/${p.id}" aria-label="${esc(p.title)}">${p.image?`<img src="${esc(p.image)}" alt="" loading="lazy">`:`<div class="visual" aria-hidden="true"></div>`}<span class="tile-label">${esc(p.title)}</span></a>`).join('')}</section>`}
+if(!path){app.innerHTML=`<section class="gallery" aria-label="Projektübersicht">${projects.map((p,i)=>`<a class="tile" href="#/${p.id}" aria-label="${esc(p.title)}">${p.image?`<img src="${esc(p.image)}" alt="" loading="lazy">`:`<div class="visual" aria-hidden="true"></div>`}<span class="tile-label"><span class="tile-label-title">${esc(p.title)}</span><span class="tile-label-description">${esc(p.tileDescription)}</span></span></a>`).join('')}</section>`}
 else if(selected && selected.id==='im-schein'){
 app.innerHTML=`<article class="project-page im-schein-page">
  <header class="project-heading"><h1>IM SCHEIN</h1><p>Sichtbarer Klang, klingendes Licht</p></header>
@@ -277,6 +309,29 @@ app.innerHTML=`<article class="project-page im-schein-page">
  <a class="back" href="#/">← ALL PROJECTS</a>
  </article>`;
 }
+else if(selected && selected.id==='ohr'){
+app.innerHTML=`<article class="project-page ohr-page">
+ <header class="project-heading"><h1>ohr.</h1><p>Making ultrasound audible</p></header>
+ <figure class="ohr-hero"><img src="images/ohr-hero.jpg" alt="Analogue ultrasound installation on an exhibition table with microphone, electronics and oscilloscope"></figure>
+ <section class="ohr-intro im-columns"><div><p class="ohr-eyebrow">INTERACTIVE SOUND INSTALLATION · OWN PROJECT</p><h2>Making the smallest movements audible.</h2></div><div class="ohr-copy"><p><strong><em>ohr.</em></strong> is an analogue interactive sound installation that turns subtle hand movements into audible changes in pitch. Instead of operating a digital interface, visitors become part of a physical process: their bodies reflect an otherwise inaudible ultrasonic signal.</p><p>The sound responds immediately to movement — without code, programmed gestures or software-based interpretation.</p></div></section>
+ <section class="ohr-section im-columns"><div><p class="ohr-eyebrow">01 / THE INTERACTION</p><h2>Move your hand. Change the sound.</h2></div><div class="ohr-copy"><p>An ultrasonic emitter sends out a high-frequency tone. A microphone positioned in the same direction receives the sound reflected by a hand placed in the field.</p><p>As the hand moves towards or away from the setup, the reflected frequency shifts. Even small gestures become audible variations, allowing visitors to explore movement as a form of sound-making.</p></div></section>
+ <section class="ohr-video-section im-exhibition-section" aria-labelledby="ohrVideoHeading">
+  <p class="ohr-eyebrow">02 / EXHIBITION DOCUMENTATION</p>
+  <h2 id="ohrVideoHeading">Movement, heard in real time.</h2>
+  <div class="im-exhibition-grid">
+   <div class="im-video-stage"><div class="im-video-wrap"><iframe id="ohrExhibitionVideo" title="ohr. — Exhibition Documentation" src="https://player.vimeo.com/video/1238110416?autoplay=0&amp;muted=1&amp;loop=1&amp;title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><button id="ohrExhibitionSoundToggle" class="im-sound-toggle" type="button" aria-label="Enable sound" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6m0-6-5 6"/></svg><span id="ohrExhibitionSoundLabel">ENABLE SOUND</span></button></div></div>
+   <div class="im-exhibition-description"><p>At the exhibition, visitors could hear how small hand movements changed the pitch of the reflected ultrasonic signal. The recording documents the installation as an immediate, physical listening experience.</p><a class="im-vimeo-link" href="https://vimeo.com/1238110416" target="_blank" rel="noopener noreferrer">Watch on Vimeo ↗</a></div>
+  </div>
+ </section>
+ <figure class="ohr-wide"><img src="images/ohr-installation.jpg" loading="lazy" alt="Ultrasonic equipment and listening station with headphones in the exhibition space"><figcaption>The experimental setup in the exhibition space.</figcaption></figure>
+ <section class="ohr-section im-columns"><div><p class="ohr-eyebrow">03 / THE PRINCIPLE</p><h2>A physical signal, not a programmed response.</h2></div><div class="ohr-copy"><p>The changing pitch comes from the Doppler effect: motion towards or away from the source changes the frequency of the reflected ultrasound. A heterodyne receiver shifts these ultrasonic frequencies into the audible range in real time.</p><p>Rather than assigning movements to digital commands, the installation makes a physical relationship between body, space and sound directly perceptible.</p></div></section>
+ <div class="ohr-signal" aria-label="Ultrasound transmission, hand reflection, Doppler shift, and audible output"><span>ULTRASOUND</span><b>→</b><span>REFLECTION BY HAND</span><b>→</b><span>FREQUENCY SHIFT</span><b>→</b><span>AUDIBLE SOUND</span></div>
+ <figure class="ohr-wide ohr-wide-context"><img src="images/ohr-context.jpg" loading="lazy" alt="The compact electronics and listening station installed on a white exhibition table"><figcaption>Listening through headphones makes the effect of movement immediately perceptible.</figcaption></figure>
+ <section class="ohr-section im-columns"><div><p class="ohr-eyebrow">04 / DESIGN APPROACH</p><h2>The body becomes part of the instrument.</h2></div><div class="ohr-copy"><p>The installation explores interaction beyond screens and conventional controls. Sound is not triggered by recognizing a gesture. It emerges from the visitor's physical presence within the ultrasonic field.</p><p>The approach draws on experiments with ultrasonic sound by John Driscoll and translates the underlying physical principle into a direct, hands-on listening experience.</p></div></section>
+ <footer class="im-footer"><div><span>PROJECT</span><strong>ohr.</strong></div><div><span>TYPE</span><strong>Analogue interactive sound installation</strong></div><div><span>MY ROLE</span><strong>Independent project · concept and realization</strong></div><div><span>REFERENCE</span><strong>Ultrasonic sound experiments by John Driscoll</strong></div></footer>
+ <a class="back" href="#/">← ALL PROJECTS</a>
+ </article>`;
+}
 else if(selected && selected.id==='corrugated-surfer'){
 app.innerHTML=`<article class="project-page corrugated-page">
  <header class="project-heading"><h1>CORRUGATED SURFER</h1><p>Interactive Game Audio</p></header>
@@ -297,7 +352,7 @@ app.innerHTML=`<article class="project-page corrugated-page">
 else if(selected){app.innerHTML=`<article class="project-page"><header class="project-heading"><h1>${esc(selected.title)}</h1><p>${esc(selected.subtitle)}</p></header><div class="hero">${selected.image?`<img src="${esc(selected.image)}" alt="${esc(selected.title)}" style="width:100%;height:100%;object-fit:cover">`:'<span>Projektvideo / großes Projektbild folgt</span>'}</div><section class="detail-grid"><div class="detail-text"><h2>${esc(selected.heading)}</h2><p>${esc(selected.description)}</p><p>Weitere Bilder, Videos und Informationen ergänzen wir hier später.</p></div><div class="detail-art ${selected.theme==='light'?'light':''}">Weitere Projektdokumentation folgt</div></section><a class="back" href="#/">← ALLE PROJEKTE</a></article>`}
 else if(path==='impressum'){app.innerHTML='<section class="empty"><h1>Impressum</h1><p>Vor der öffentlichen Nutzung bitte vollständige rechtliche Angaben ergänzen.</p><a class="back" href="#/">← ZURÜCK</a></section>'}
 else{app.innerHTML='<section class="empty"><h1>Seite nicht gefunden</h1><a href="#/">Zur Projektübersicht</a></section>'}
-closeMenu();window.scrollTo(0,0);if(selected?.id==='im-schein'||selected?.id==='corrugated-surfer')initPortfolioVideos()}
+closeMenu();window.scrollTo(0,0);if(selected?.id==='im-schein'||selected?.id==='corrugated-surfer'||selected?.id==='ohr')initPortfolioVideos()}
 // The site name is a home link in both desktop and mobile headers.
 // Render immediately, including when the hash is already #/.
 document.querySelectorAll('a.brand').forEach(brand=>{
